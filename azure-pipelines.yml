@@ -52,20 +52,13 @@ steps:
 #     custom: tool
 #     arguments: 'restore'
 
-  - script: 
-          dotnet --list-sdks
-          dotnet restore
-          dotnet build --configuration Release --output publish_output
-          # execute tests
-          dotnet test --no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-
-# - task: DotNetCoreCLI@2
-#   displayName: 'Run unit tests - $(buildConfiguration)'
-#   inputs:
-#     command: 'test'
-#     arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-#     publishTestResults: true
-#     projects: '**/*.Tests.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Run unit tests - $(buildConfiguration)'
+  inputs:
+    command: 'test'
+    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+    publishTestResults: true
+    projects: '**/*.Tests.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Create code coverage report'
